@@ -25,7 +25,9 @@ module ReplicaPools
           [
            :select_all, :select_one, :select_value, :select_values,
            :select_rows, :select, :select_prepared, :verify!, :raw_connection,
-           :active?, :reconnect!, :disconnect!, :reset_runtime, :log
+           :active?, :reconnect!, :disconnect!, :reset_runtime, :log,
+           :schema_cache, :sanitize_limit, :combine_bind_parameters,
+           :lookup_cast_type_from_column
           ]
         else
           warn "Unsupported ActiveRecord version #{ActiveRecord.version}. Please whitelist the safe methods."
@@ -33,7 +35,7 @@ module ReplicaPools
     end
 
     config.after_initialize do
-      ReplicaPools.setup!
+      ReplicaPools.setup! unless Rails.env.test?
     end
   end
 end
